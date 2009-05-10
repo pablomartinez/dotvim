@@ -1,1 +1,60 @@
-../.vimrc
+syntax on
+set nocompatible
+set expandtab
+set ts=2
+set mouse=a
+filetype plugin indent on
+colorscheme koehler
+
+augroup myfiletypes
+  autocmd!
+ autocmd FileType ruby,eruby,yaml set ai sw=2 sts=2 et
+augroup END
+
+" Para navegar y maximizar ventanas
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+set wmh=0
+
+" Para internacionalizar en las vistas de Rails
+" Chapu de la muerte, tendría que estar en un filetype o algo
+vmap ;i	<Esc>`>a') %><Esc>`<i<%= _('<Esc>l
+vmap ;m	<Esc>`>a %><Esc>`<i<%= <Esc>l
+
+filetype plugin indent on  " Automatically detect file types.
+set nocompatible  " We don't want vi compatibility.
+
+" Add recently accessed projects menu (project plugin)
+set viminfo^=!
+
+" Change which file opens after executing :Rails command
+let g:rails_default_file='config/database.yml'
+
+" Autocompletado
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType ruby set omnifunc=rubycomplete#Complete
+autocmd FileType c set omnifunc=ccomplete#Complete
+
+" Buffers
+set hidden
+map <C-b> :bprev!<CR>
+map <C-n> :bnext!<CR>
+" Buftabs
+set laststatus=2
+let g:buftabs_only_basename=1 
+let g:buftabs_in_statusline=1
+
+" Para busqueda de ficheros facilona usando TSelectList
+noremap <F3> :TSelectFilesInSubdirs <C-r>=b:rails_root<cr><cr>
+
+" Configuración de TagList. 
+" Para usar TagList con proyectos Rails
+autocmd BufEnter * if exists("b:rails_root") | let g:base_dir = b:rails_root | endif |
+nnoremap <silent> <F7> :TlistAddFilesRecursive <C-r>=g:base_dir<cr>/app/ *.rb<cr>
+nnoremap <silent> <F8> :TlistToggle<CR>
+let Tlist_Exit_OnlyWindow = 1     " exit if taglist is last window open
